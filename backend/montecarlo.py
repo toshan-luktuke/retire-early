@@ -1,4 +1,5 @@
 import random
+from returns import get_asset_return
 
 def simulate_iteration(financials, asset_params, years=10, inflation=0.025):
     # Unpack financials
@@ -15,13 +16,12 @@ def simulate_iteration(financials, asset_params, years=10, inflation=0.025):
     portfolio_value = current_value
     portfolio_history = []
 
-    for _ in range(years):
-        # Calculate weighted return based on each asset class simulation
+    for year in range(1, years+1):
+        # Calculate weighted return based on each asset class simulation using returns.py
         yearly_return = 0.0
         for asset, weight in distribution.items():
-            mean_return, std_dev = asset_params[asset]
-            # Generate a random return for the asset class
-            r = random.gauss(mean_return, std_dev)
+            # Use get_asset_return from returns.py
+            r = get_asset_return(asset, year)
             yearly_return += weight * r
 
         # Grow portfolio by market returns and add the year's net contribution
@@ -64,7 +64,8 @@ def main():
         expenses = float(input("Enter annual expenses: "))
         liabilities = float(input("Enter annual liabilities: "))
         current_value = float(input("Enter current portfolio value: "))
-        goal = float(input("Enter your 10-year financial goal value (in today's dollars): "))
+        goal = float(input("Enter your financial goal value (in today's dollars): "))
+        years = int(input("Enter the number of years for the simulation: "))
         
         print("\nEnter portfolio distribution percentages as decimals (they must sum to 1).")
         equities = float(input("Enter allocation for equities (e.g., 0.6): "))
@@ -97,12 +98,11 @@ def main():
     }
     
     iterations = 100
-    years = 10
     inflation = 0.025
     probability, avg_yearly_networth = run_monte_carlo(financials, asset_params, goal, iterations, years, inflation)
     
     print(f"\nAfter {iterations} Monte Carlo iterations:")
-    print(f"Probability of reaching the 10-year goal (inflation-adjusted): {probability*100:.1f}%")
+    print(f"Probability of reaching the {years}-year goal (inflation-adjusted): {probability*100:.1f}%")
     print("\nAverage net worth per year across all iterations:")
     for year, value in enumerate(avg_yearly_networth, start=1):
         print(f"Year {year}: {value:,.2f}")
