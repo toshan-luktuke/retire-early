@@ -5,10 +5,27 @@ body {
     padding: 0;
 }
 
+.retirement-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+.form-section {
+    flex: 1;
+}
+
+.chart-section {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Existing styles for the form */
 .retirement-form {
     background-color: #fff;
     max-width: 600px;
-    margin: 40px auto;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
